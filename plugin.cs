@@ -21,13 +21,12 @@ namespace GorillaTagModTemplateProject
 #pragma warning disable IDE0051 // IDE0051: Remove unused member
 		void Start() 
 		{ 
-			HarmonyPatches.ApplyHarmonyPatches();
 			Utilla.Events.GameInitialized += OnGameInitialized;
 		}
 		void OnGameInitialized(object sender, EventArgs e)
 		{
 			/* Code here runs after the game initializes (i.e. GorillaLocomotion.Player.Instance != null) */
-			
+
 			Stream str = Assembly.GetExecutingAssembly().GetManifestResourceStream("Banan.Assets.banan");
 			AssetBundle bundle = AssetBundle.LoadFromStream(str);
 			GameObject banan = bundle.LoadAsset<GameObject>("banana");
