@@ -1,20 +1,9 @@
-﻿using System.Net;
-using System.IO;
-using System.Reflection;
-using System.Collections.Generic;
+using BepInEx;
 using System;
-using System.Text;
-using System.Collections;
 using System.ComponentModel;
-using UnityEngine.XR;
-using UnityEngine.UI;
+using System.Reflection;
 using UnityEngine;
 using Utilla;
-using BepInEx;
-using HarmonyLib;
-using GorillaLocomotion;
-using Photon.Pun;
-using UnityEngine.Rendering;
 
 
 namespace GorillaTagModTemplateProject
