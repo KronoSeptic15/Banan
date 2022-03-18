@@ -1,19 +1,19 @@
-using BepInEx;
-using System;
-using System.ComponentModel;
+using System.IO;
 using System.Reflection;
+using System;
 using UnityEngine;
-using Utilla;
+using BepInEx;
 
 
 namespace GorillaTagModTemplateProject
 {
 	[BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
+	
 	public class Plugin : BaseUnityPlugin
-	{
+	{	
+		private static GameObject banana;
 		public static readonly string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 #pragma warning disable IDE0051 // IDE0051: Remove unused member
-		private static GameObject banana;
 		void OnGameInitialized(object sender, EventArgs e)
 		{
 			Stream str = Assembly.GetExecutingAssembly().GetManifestResourceStream("Banan.Assets.banan");
