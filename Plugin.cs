@@ -15,29 +15,53 @@ using HarmonyLib;
 using GorillaLocomotion;
 using Photon.Pun;
 using UnityEngine.Rendering;
-
-
-namespace GorillaTagModTemplateProject
+using Bepinject;
+using BepInEx.Configuration;
+namespace GorillaTagModTemplate
 {
-	[BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
-	public class Plugin : BaseUnityPlugin
-	{
-		public static readonly string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-		#pragma warning disable IDE0051 // IDE0051: Remove unused member
-		void OnGameInitialized(object sender, EventArgs e)
-		{
-			Stream str = Assembly.GetExecutingAssembly().GetManifestResourceStream("Banan.Assets.banan");
-			AssetBundle bundle = AssetBundle.LoadFromStream(str);
-			GameObject banan = bundle.LoadAsset<GameObject>("banana");
-			var banana = Instantiate(banan);
-			GameObject hand = GameObject.Find("OfflineVRRig/Actual Gorilla/rig/body/shoulder.L/upper_arm.L/forearm.L/hand.L/palm.01.L");
-			banana.transform.SetParent(hand.transform, false);
-			banana.transform.localPosition = new Vector3(-0.016f, 0.159f, 0.05f);
-			banana.transform.localScale = new Vector3(15f, 15f, 15f);
-			banana.transform.localRotation = Quaternion.Euler(0.0f, 180f, 0.0f);
-		}
-		private void OnEnable() => Plugin.banana.SetActive(true);
+    [Description("HauntedModMenu")]
+    [ModdedGamemode]
+    [BepInDependency("org.legoandmars.gorillatag.utilla", "1.5.0")]
+    [BepInPlugin(PluginInfo.GUID, PluginInfo.Name, PluginInfo.Version)]
 
-		private void OnDisable() => Plugin.banana.SetActive(false);
-	}
+    [HarmonyPatch(typeof(GorillaLocomotion.Player))]
+    [HarmonyPatch("Update", MethodType.Normal)]
+    public class Plugin : BaseUnityPlugin
+    {
+        public bool inRoom;
+        public static bool toggle;
+        private NoClipManager modInstance = null;
+        bool modEnabled = false;
+
+        void OnEnable()
+        {
+            HarmonyPatches.ApplyHarmonyPatches();
+            modEnabled = true;
+            if (modInstance != null)
+                modInstance.enabled = modEnabled && inRoom;
+        }
+        void OnDisable()
+        {
+            modEnabled = false;
+            if (modInstance != null)
+                modInstance.enabled = modEnabled;
+            HarmonyPatches.RemoveHarmonyPatches();
+        }
+        [ModdedGamemodeJoin]
+        public void OnJoin(string gamemode)
+        {
+            
+            modInstance = gameObject.AddComponent<NoClipManager>();
+            modInstance.enabled = modEnabled;
+            inRoom = true;
+        }
+
+        [ModdedGamemodeLeave]
+        public void OnLeave(string gamemode)
+        {
+            GameObject.Destroy(modInstance);
+            inRoom = false;
+
+        }
+    }
 }
