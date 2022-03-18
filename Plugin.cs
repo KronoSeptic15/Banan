@@ -13,6 +13,7 @@ namespace GorillaTagModTemplateProject
 	{
 		public static readonly string assemblyLocation = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 #pragma warning disable IDE0051 // IDE0051: Remove unused member
+		private static GameObject banana;
 		void OnGameInitialized(object sender, EventArgs e)
 		{
 			Stream str = Assembly.GetExecutingAssembly().GetManifestResourceStream("Banan.Assets.banan");
